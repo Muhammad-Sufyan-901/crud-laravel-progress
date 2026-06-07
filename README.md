@@ -1,58 +1,169 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Blog CRUD — Laravel Learning Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web sederhana untuk belajar operasi **CRUD (Create, Read, Update, Delete)** menggunakan **Laravel 13**. Proyek ini mengelola dua entitas utama: **Author** (penulis) dan **Blog** (artikel), termasuk relasi antar keduanya.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **CRUD Author** — tambah, lihat, ubah, dan hapus data penulis (nama & nama pena)
+- **CRUD Blog** — tambah, lihat, ubah, dan hapus artikel beserta judulnya
+- **Relasi Author ↔ Blog** — setiap blog terhubung ke satu author
+- **Soft Deletes** — data yang dihapus tidak langsung hilang dari database
+- **Tampilan responsif** dengan Tailwind CSS 4
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Teknologi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Teknologi | Versi |
+|-----------|-------|
+| PHP | >= 8.3 |
+| Laravel | ^13.8 |
+| MySQL | 5.7+ / 8.x |
+| Vite | ^8.0 |
+| Tailwind CSS | ^4.0 |
+| Pest (testing) | ^4.7 |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Prasyarat
 
-## Agentic Development
+Sebelum memulai, pastikan sudah terinstall di komputer kamu:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **PHP** versi 8.3 atau lebih baru
+- **Composer** (dependency manager PHP)
+- **Node.js** dan **npm**
+- **MySQL** (atau MariaDB)
+- **Git**
+
+---
+
+## Cara Clone & Menjalankan Proyek
+
+### 1. Clone repositori
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <url-repositori-ini>
+cd blog-crud-progress
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install dependency PHP
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Salin file konfigurasi environment
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Generate application key
 
-## Security Vulnerabilities
+```bash
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Konfigurasi database
 
-## License
+Buka file `.env`, lalu sesuaikan pengaturan database berikut:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=blog_crud_progress
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+> Buat database bernama `blog_crud_progress` di MySQL terlebih dahulu:
+> ```sql
+> CREATE DATABASE blog_crud_progress;
+> ```
+
+### 6. Jalankan migrasi database
+
+```bash
+php artisan migrate
+```
+
+### 7. Install dependency Node.js
+
+```bash
+npm install
+```
+
+### 8. Jalankan aplikasi
+
+**Cara cepat** — jalankan semua service sekaligus (server, queue, log, vite):
+
+```bash
+composer dev
+```
+
+**Atau secara terpisah**, buka dua terminal:
+
+```bash
+# Terminal 1 — PHP development server
+php artisan serve
+
+# Terminal 2 — Vite (asset bundler)
+npm run dev
+```
+
+### 9. Akses aplikasi
+
+Buka browser dan kunjungi:
+
+- **Author**: [http://localhost:8000/authors](http://localhost:8000/authors)
+- **Blog**: [http://localhost:8000/blogs](http://localhost:8000/blogs)
+
+---
+
+### Shortcut: Setup Otomatis
+
+Kamu bisa menjalankan semua langkah 2–7 sekaligus dengan satu perintah:
+
+```bash
+composer setup
+```
+
+Perintah ini akan otomatis menginstall dependency, membuat `.env`, generate key, menjalankan migrasi, dan build aset frontend.
+
+---
+
+## Rute Utama
+
+| Method | URL | Keterangan |
+|--------|-----|------------|
+| GET | `/authors` | Daftar semua author |
+| GET | `/authors/create` | Form tambah author |
+| POST | `/authors` | Simpan author baru |
+| GET | `/authors/edit/{id}` | Form edit author |
+| PUT | `/authors/{id}` | Update data author |
+| DELETE | `/authors/{id}` | Hapus author |
+| GET | `/blogs` | Daftar semua blog |
+| GET | `/blogs/create` | Form tambah blog |
+| POST | `/blogs` | Simpan blog baru |
+| GET | `/blogs/edit/{id}` | Form edit blog |
+| PUT | `/blogs/{id}` | Update data blog |
+| DELETE | `/blogs/{id}` | Hapus blog |
+
+---
+
+## Menjalankan Test
+
+```bash
+php artisan test
+# atau
+composer test
+```
+
+---
+
+## Lisensi
+
+Proyek ini dibuat untuk keperluan pembelajaran. Bebas digunakan dan dimodifikasi.
